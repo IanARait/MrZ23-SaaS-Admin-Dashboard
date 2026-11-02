@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects Â· FlowBoard</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="../css/variables.css"/>
+  <link rel="stylesheet" href="../css/reset.css"/>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/components.css"/>
+  <link rel="stylesheet" href="../css/forms.css"/>
+  <link rel="stylesheet" href="../css/tables.css"/>
+  <link rel="stylesheet" href="../css/dashboard.css"/>
+  <link rel="stylesheet" href="../css/responsive.css"/>
+  <link rel="stylesheet" href="../css/animations.css"/>
+</head>
+<body>
+  <div class="page-content">
+
+    <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-3);margin-bottom:var(--density-gap)">
+      <div>
+        <h1 class="page-title">Projects</h1>
+        <p class="page-subtitle">Track project progress and manage deliverables</p>
+      </div>
+      <div class="page-actions" style="display:flex;gap:var(--sp-2)">
+        <div class="segmented" role="tablist" id="viewToggle">
+          <button class="active" data-view="grid"><i class="fa-solid fa-grip"></i></button>
+          <button data-view="list"><i class="fa-solid fa-list"></i></button>
+        </div>
+        <button class="btn btn-primary btn-sm" id="addProjectBtn"><i class="fa-solid fa-plus"></i> Add Project</button>
+      </div>
+    </div>
+
+    <div class="section-gap" id="gridView"></div>
+    <div class="card section-gap" id="listView" style="display:none"><div id="projectsTable"></div></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/modal.js"></script>
+  <script src="../js/charts.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/pages/projects.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+/* FlowBoard Design Tokens — 2026 Edition
+   Dark-first. Minimal chrome. Maximum data density.
+   Single accent color. Semantic tokens. No decorative noise. */
+
+:root {
+  --primary: #818CF8;
+  --primary-strong: #6366F1;
+  --secondary: #A78BFA;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+  --info: #22D3EE;
+  --accent: var(--primary);
+  --accent-strong: var(--primary-strong);
+
+  --bg: #F4F4F5;
+  --surface: #FFFFFF;
+  --surface-2: #F0F0F2;
+  --text: #18181B;
+  --muted: #71717A;
+  --border: #E4E4E7;
+
+  --sidebar-bg: #FAFAFA;
+  --sidebar-text: #3F3F46;
+  --sidebar-muted: #A1A1AA;
+  --sidebar-active-bg: rgba(99, 102, 241, 0.08);
+  --sidebar-hover-bg: rgba(0, 0, 0, 0.03);
+
+  --success-bg: rgba(52, 211, 153, 0.1);
+  --warning-bg: rgba(251, 191, 36, 0.1);
+  --danger-bg: rgba(248, 113, 113, 0.1);
+  --info-bg: rgba(34, 211, 238, 0.1);
+  --primary-bg: rgba(99, 102, 241, 0.08);
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Fira Code", monospace;
+  --fs-xs: 0.6875rem;
+  --fs-sm: 0.75rem;
+  --fs-md: 0.8125rem;
+  --fs-base: 0.875rem;
+  --fs-lg: 1rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: 1.5rem;
+  --fs-3xl: 2rem;
+
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-lg: 8px;
+  --radius-full: 999px;
+
+  --shadow-xs: none;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-pop: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 120ms var(--ease);
+  --t-med: 200ms var(--ease);
+  --t-slow: 300ms var(--ease);
+
+  --sidebar-w: 240px;
+  --sidebar-w-collapsed: 56px;
+  --topbar-h: 52px;
+
+  --density-pad-y: 10px;
+  --density-row-h: 40px;
+  --density-gap: 16px;
+  --z-index-plan: 0;
+}
+
+[data-theme="dark"] {
+  --bg: #09090B;
+  --surface: #18181B;
+  --surface-2: #27272A;
+  --text: #FAFAFA;
+  --muted: #A1A1AA;
+  --border: #27272A;
+
+  --sidebar-bg: #09090B;
+  --sidebar-text: #D4D4D8;
+  --sidebar-muted: #52525B;
+  --sidebar-active-bg: rgba(129, 140, 248, 0.12);
+  --sidebar-hover-bg: rgba(255, 255, 255, 0.04);
+
+  --success-bg: rgba(52, 211, 153, 0.12);
+  --warning-bg: rgba(251, 191, 36, 0.12);
+  --danger-bg: rgba(248, 113, 113, 0.14);
+  --info-bg: rgba(34, 211, 238, 0.12);
+  --primary-bg: rgba(129, 140, 248, 0.12);
+
+  --shadow-xs: none;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+[data-density="compact"]  { --density-pad-y: 8px;  --density-row-h: 36px; --density-gap: 12px; }
+[data-density="spacious"] { --density-pad-y: 14px; --density-row-h: 48px; --density-gap: 24px; }
+
+[data-accent="indigo"]   { --accent: #818CF8; --accent-strong: #6366F1; }
+[data-accent="violet"]   { --accent: #A78BFA; --accent-strong: #7C3AED; }
+[data-accent="emerald"]  { --accent: #34D399; --accent-strong: #10B981; }
+[data-accent="rose"]     { --accent: #FB7185; --accent-strong: #F43F5E; }
+[data-accent="amber"]    { --accent: #FBBF24; --accent-strong: #F59E0B; }
+[data-accent="sky"]      { --accent: #38BDF8; --accent-strong: #0EA5E9; }

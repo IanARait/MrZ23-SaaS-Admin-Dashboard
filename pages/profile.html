@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile Â· FlowBoard</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="../css/variables.css"/>
+  <link rel="stylesheet" href="../css/reset.css"/>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/components.css"/>
+  <link rel="stylesheet" href="../css/forms.css"/>
+  <link rel="stylesheet" href="../css/responsive.css"/>
+  <link rel="stylesheet" href="../css/animations.css"/>
+</head>
+<body>
+  <div class="page-content" id="profilePage"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/modal.js"></script>
+  <script src="../js/charts.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+  window.FB = window.FB || {};
+  (() => {
+    "use strict";
+    function init() {
+      FB.app.ready({ active: "dashboard", crumb: ["Profile"], title: "Profile" });
+      const p = FB.settings.profile;
+      const page = document.getElementById("profilePage");
+      const recentTasks = FB.tasks.filter((t) => t.status === "done").slice(0, 5);
+      const projects = FB.projects.filter((p) => p.team && p.team.includes("U-1001")).slice(0, 4);
+
+      page.innerHTML = `
+        <div class="card" style="margin-bottom:var(--density-gap)">
+          <div style="height:140px;background:linear-gradient(135deg,var(--accent),var(--secondary));border-radius:var(--radius-lg) var(--radius-lg) 0 0;position:relative">
+            <div style="position:absolute;bottom:-40px;left:var(--sp-6)">
+              <span class="avatar lg" style="background:${p.color};width:80px;height:80px;font-size:28px;border:4px solid var(--surface)">${FB.util.initials(p.name)}</span>
+            </div>
+          </div>
+          <div class="card-body" style="padding-top:52px">
+            <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:var(--sp-3)">
+              <div>
+                <div style="font-family:var(--font-display);font-weight:800;font-size:var(--fs-xl)">${FB.util.escapeHtml(p.name)}</div>
+                <div class="muted">Workspace Admin</div>
+                <div style="display:flex;gap:var(--sp-4);margin-top:var(--sp-3);flex-wrap:wrap">
+                  <span class="muted small"><i class="fa-solid fa-envelope" style="width:16px"></i> ${FB.util.escapeHtml(p.email)}</span>
+                  <span class="muted small"><i class="fa-solid fa-phone" style="width:16px"></i> ${FB.util.escapeHtml(p.phone)}</span>
+                  <span class="muted small"><i class="fa-solid fa-location-dot" style="width:16px"></i> ${FB.util.escapeHtml(p.location)}</span>
+                </div>
+              </div>
+              <a href="settings.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-gear"></i> Edit Profile</a>
+            </div>
+            <p style="margin-top:var(--sp-4);color:var(--muted);max-width:500px">${FB.util.escapeHtml(p.bio)}</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><div class="card-title">My Projects</div></div>
+            <div class="card-body">
+              ${projects.map((proj) => `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+                <div style="flex:1;min-width:0"><div class="cell-name">${FB.util.escapeHtml(proj.name)}</div><div class="cell-sub">${proj.client}</div></div>
+                ${FB.util.statusBadge(proj.status)}
+              </div>`).join("") || '<p class="muted small" style="padding:16px">No projects assigned</p>'}
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Recent Activity</div></div>
+            <div class="card-body">
+              ${recentTasks.map((t) => `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+                <i class="fa-solid fa-check-circle" style="color:var(--success)"></i>
+                <div style="flex:1;min-width:0"><div class="cell-name">${FB.util.escapeHtml(t.title)}</div><div class="cell-sub">${FB.util.fmtDate(t.createdAt)}</div></div>
+              </div>`).join("") || '<p class="muted small" style="padding:16px">No recent activity</p>'}
+            </div>
+          </div>
+        </div>`;
+    }
+    document.addEventListener("DOMContentLoaded", init);
+  })();
+  </script>
+</body>
+</html>

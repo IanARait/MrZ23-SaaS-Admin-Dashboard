@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications Â· FlowBoard</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="../css/variables.css"/>
+  <link rel="stylesheet" href="../css/reset.css"/>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/components.css"/>
+  <link rel="stylesheet" href="../css/responsive.css"/>
+  <link rel="stylesheet" href="../css/animations.css"/>
+</head>
+<body>
+  <div class="page-content">
+    <div class="page-header">
+      <div><div class="page-title">Notifications</div><div class="page-subtitle">Stay updated with your latest activities</div></div>
+      <div class="page-actions">
+        <button class="btn btn-outline btn-sm" id="markAllReadBtn"><i class="fa-solid fa-check-double"></i> Mark all read</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="tabs" id="notifTabs" style="border:none;margin:0">
+          <button class="tab active" data-filter="all">All <span class="count" id="countAll"></span></button>
+          <button class="tab" data-filter="unread">Unread <span class="count" id="countUnread"></span></button>
+          <button class="tab" data-filter="system">System</button>
+          <button class="tab" data-filter="payment">Billing</button>
+        </div>
+      </div>
+      <div id="notifList"></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="../js/toast.js"></script>
+  <script src="../js/modal.js"></script>
+  <script src="../js/charts.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+  window.FB = window.FB || {};
+  (() => {
+    "use strict";
+    let filter = "all";
+
+    function render() {
+      const list = document.getElementById("notifList");
+      let notifs = [...FB.notifications];
+      if (filter === "unread") notifs = notifs.filter((n) => !n.read);
+      else if (filter !== "all") notifs = notifs.filter((n) => n.type === filter);
+
+      document.getElementById("countAll").textContent = FB.notifications.length;
+      document.getElementById("countUnread").textContent = FB.notifications.filter((n) => !n.read).length;
+
+      if (!notifs.length) {
+        list.innerHTML = `<div class="empty-state"><span class="empty-icon"><i class="fa-solid fa-bell-slash"></i></span><div class="empty-title">No notifications</div><p class="empty-text">You're all caught up!</p></div>`;
+        return;
+      }
+
+      list.innerHTML = notifs.map((n) => {
+        let text = "";
+        switch (n.type) {
+          case "order": text = `<b>${FB.util.escapeHtml(n.actor)}</b> ${FB.util.escapeHtml(n.detail)} <b>${n.amount}</b>`; break;
+          case "payment": text = `Payment of <b>${n.amount}</b> received from <b>${FB.util.escapeHtml(n.actor)}</b>`; break;
+          case "message": text = `<b>${FB.util.escapeHtml(n.actor)}</b> sent you a message`; break;
+          case "system": text = `<b>${FB.util.escapeHtml(n.title)}</b> â€” deployed successfully`; break;
+          default: text = `<b>${FB.util.escapeHtml(n.actor)}</b> ${FB.util.escapeHtml(n.detail)}`;
+        }
+        return `<div class="notif-item ${n.read ? "" : "unread"}" data-nid="${n.id}">
+          <span class="notif-icon" style="background:${n.bg};color:${n.color}"><i class="fa-solid ${n.icon}"></i></span>
+          <div class="notif-body" style="flex:1">
+            <div class="notif-text">${text}</div>
+            <div class="notif-time">${FB.util.timeAgo(n.time)}</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            ${!n.read ? `<button class="btn btn-ghost btn-sm" data-read="${n.id}" title="Mark read"><i class="fa-solid fa-check"></i></button>` : ""}
+            <button class="btn btn-ghost btn-sm" data-delnotif="${n.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join("");
+
+      list.querySelectorAll("[data-read]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const n = FB.notifications.find((x) => x.id === btn.dataset.read);
+          if (n) { n.read = true; FB.db.persist("notifications"); render(); FB.toast.success("Marked as read"); }
+        });
+      });
+      list.querySelectorAll("[data-delnotif]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          FB.notifications = FB.notifications.filter((x) => x.id !== btn.dataset.delnotif);
+          FB.db.persist("notifications");
+          render();
+          FB.toast.success("Notification deleted");
+        });
+      });
+    }
+
+    function init() {
+      FB.app.ready({ active: "notifications", crumb: ["Notifications"], title: "Notifications" });
+      render();
+      document.getElementById("notifTabs").addEventListener("click", (e) => {
+        const tab = e.target.closest(".tab");
+        if (!tab) return;
+        document.querySelectorAll("#notifTabs .tab").forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        filter = tab.dataset.filter;
+        render();
+      });
+      document.getElementById("markAllReadBtn").addEventListener("click", () => {
+        FB.notifications.forEach((n) => (n.read = true));
+        FB.db.persist("notifications");
+        render();
+        FB.toast.success("All notifications marked as read");
+      });
+    }
+    document.addEventListener("DOMContentLoaded", init);
+  })();
+  </script>
+</body>
+</html>

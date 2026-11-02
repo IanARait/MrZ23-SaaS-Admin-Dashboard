@@ -1,0 +1,85 @@
+/* FlowBoard Responsive — 2026 Edition
+   Desktop-first. Mobile = functional, not identical. */
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform var(--t-slow);
+  }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 99;
+    display: none;
+  }
+  .mobile-overlay.open { display: block; }
+  .mobile-menu-btn { display: flex !important; }
+}
+
+/* Desktop sidebar collapse */
+@media (min-width: 1025px) {
+  .mobile-menu-btn { display: none !important; }
+}
+
+/* Small tablet */
+@media (max-width: 768px) {
+  .content { padding: var(--sp-3); }
+  .topbar { padding: 0 var(--sp-3); }
+  .topbar-search { display: none; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+  .page-header-actions { width: 100%; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+  .settings-layout { grid-template-columns: 1fr; }
+  .settings-nav { flex-direction: row; overflow-x: auto; gap: var(--sp-2); padding-bottom: var(--sp-2); }
+  .settings-nav-item { white-space: nowrap; }
+
+  .chat-layout { grid-template-columns: 1fr !important; }
+  .chat-sidebar { display: none; }
+  .chat-sidebar.mobile-open { display: flex; position: fixed; inset: 0; z-index: 100; background: var(--surface); }
+
+  .kanban { overflow-x: auto; padding-bottom: var(--sp-3); }
+  .kanban-col { min-width: 280px; }
+}
+
+/* Phone */
+@media (max-width: 480px) {
+  .content { padding: var(--sp-2); }
+  .topbar { padding: 0 var(--sp-2); gap: var(--sp-2); }
+  .topbar-title { font-size: var(--fs-base); }
+  .card { padding: var(--sp-3); }
+  .stat-card { padding: var(--sp-3); }
+  .stat-value { font-size: var(--fs-xl); }
+  .btn { padding: 5px 10px; font-size: var(--fs-xs); }
+
+  .modal {
+    width: 95%;
+    max-width: none;
+    border-radius: var(--radius);
+  }
+  .drawer { width: 100%; max-width: 100%; }
+
+  .toast-container { left: var(--sp-2); right: var(--sp-2); bottom: var(--sp-2); }
+  .toast { min-width: 0; width: 100%; }
+
+  .calendar-grid { font-size: var(--fs-xs); }
+  .cal-cell { min-height: 48px; padding: 2px; }
+  .cal-event { font-size: 9px; padding: 1px 3px; }
+
+  .invoice-print { padding: var(--sp-2); }
+}
+
+/* Print */
+@media print {
+  .sidebar, .topbar, .btn, .table-toolbar, .toast-container { display: none !important; }
+  .main { margin: 0; }
+  .content { padding: 0; overflow: visible; }
+  .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+}

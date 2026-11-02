@@ -1,0 +1,86 @@
+/* FlowBoard Animations — 2026 Edition
+   Subtle. Purposeful. No flashy bounces. */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes progressIndeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+/* Stagger helpers */
+.stagger > * { animation: fadeInUp 0.3s var(--ease) both; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(7) { animation-delay: 240ms; }
+.stagger > *:nth-child(8) { animation-delay: 280ms; }
+
+/* Utility classes */
+.animate-fade-in { animation: fadeIn 0.2s var(--ease); }
+.animate-fade-in-up { animation: fadeInUp 0.25s var(--ease); }
+.animate-slide-in { animation: slideInRight 0.25s var(--ease); }
+.animate-scale-in { animation: scaleIn 0.2s var(--ease); }
+.animate-pulse { animation: pulse 2s infinite; }
+.animate-spin { animation: spin 0.8s linear infinite; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Page transition */
+.page-enter {
+  animation: fadeInUp 0.25s var(--ease);
+}
+
+/* Progress indeterminate */
+.progress-indeterminate .progress-bar {
+  width: 40%;
+  animation: progressIndeterminate 1.5s ease-in-out infinite;
+}

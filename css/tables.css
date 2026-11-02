@@ -1,0 +1,156 @@
+/* FlowBoard Tables — 2026 Edition
+   Dense rows. Monospace data. Thin borders. Compact. */
+
+/* Table shell */
+.table-shell { overflow: hidden; }
+
+/* Toolbar */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) 0;
+  margin-bottom: var(--sp-2);
+}
+.table-toolbar-left { display: flex; align-items: center; gap: var(--sp-2); flex: 1; }
+.table-toolbar-right { display: flex; align-items: center; gap: var(--sp-2); }
+
+.table-search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: var(--fs-sm);
+  max-width: 240px;
+}
+.table-search i { color: var(--muted); font-size: var(--fs-xs); }
+.table-search input {
+  border: none;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--text);
+  outline: none;
+  width: 100%;
+}
+.table-search input::placeholder { color: var(--muted); }
+
+.table-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.table-filter-btn:hover { color: var(--text); border-color: var(--muted); }
+.table-filter-btn.active { color: var(--accent); border-color: var(--accent); background: var(--primary-bg); }
+
+.table-count {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Bulk bar */
+.bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--primary-bg);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-sm);
+  animation: fadeIn 0.15s var(--ease);
+}
+.bulk-bar strong { font-weight: 600; color: var(--accent); }
+
+/* Table wrapper */
+.table-scroll { overflow-x: auto; }
+
+/* Table core */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+.data-table th {
+  text-align: left;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+}
+.data-table th:hover { color: var(--text); }
+.data-table th .sort-icon { margin-left: 4px; font-size: 10px; opacity: 0.5; }
+.data-table th.sorted .sort-icon { opacity: 1; color: var(--accent); }
+.data-table th.sorted { color: var(--text); }
+
+.data-table td {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.data-table tbody tr { transition: background var(--t-fast); }
+.data-table tbody tr:hover { background: var(--surface-2); }
+.data-table tbody tr.selected { background: var(--primary-bg); }
+
+.data-table .cell-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+.data-table .cell-right { text-align: right; }
+.data-table .cell-center { text-align: center; }
+.data-table .cell-nowrap { white-space: nowrap; }
+.data-table .cell-truncate {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.data-table .cell-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Row click */
+.data-table tbody tr[data-href] { cursor: pointer; }
+
+/* Table footer */
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) 0;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+.table-footer-left { font-size: var(--fs-xs); }
+.table-footer-right { display: flex; align-items: center; gap: var(--sp-3); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-toolbar { flex-wrap: wrap; }
+  .table-search { max-width: 100%; flex: 1; }
+  .table-footer { flex-direction: column; gap: var(--sp-2); }
+}

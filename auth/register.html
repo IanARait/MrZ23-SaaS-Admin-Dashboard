@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create account · FlowBoard</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="../css/variables.css"/>
+  <link rel="stylesheet" href="../css/reset.css"/>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/components.css"/>
+  <link rel="stylesheet" href="../css/forms.css"/>
+  <link rel="stylesheet" href="../css/animations.css"/>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card" style="max-width:420px">
+      <div class="auth-brand">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" rx="6" fill="var(--accent)"/>
+          <path d="M7 8h10M7 12h6M7 16h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-text">FlowBoard</span>
+      </div>
+
+      <h1 class="auth-title">Create account</h1>
+      <p class="auth-subtitle">14-day free trial. No credit card needed.</p>
+
+      <form id="registerForm" class="auth-form" novalidate>
+        <div class="form-grid" style="grid-template-columns:1fr 1fr">
+          <div class="field">
+            <label class="field-label" for="fullName">Full name *</label>
+            <input id="fullName" placeholder="Jane Cooper" autocomplete="name"/>
+            <div class="field-error"></div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="company">Company</label>
+            <input id="company" placeholder="Acme Inc." autocomplete="organization"/>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="email">Email *</label>
+          <input type="email" id="email" placeholder="you@company.com" autocomplete="email"/>
+          <div class="field-error"></div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="password">Password *</label>
+          <div style="position:relative">
+            <input type="password" id="password" placeholder="8+ characters" autocomplete="new-password"/>
+            <button type="button" data-pw-toggle aria-label="Show password" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:var(--fs-xs)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <label class="check-field">
+          <input type="checkbox" id="terms"/>
+          <span style="font-size:var(--fs-xs);color:var(--muted)">I agree to the <a href="#" style="color:var(--accent)">Terms</a> and <a href="#" style="color:var(--accent)">Privacy</a></span>
+        </label>
+
+        <button class="btn btn-primary btn-lg" type="submit" style="width:100%">Create account <i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+
+      <p class="auth-footer">
+        Already have an account? <a href="login.html">Sign in</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="../js/theme.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    FB.authPage.guestOnly();
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const name = document.getElementById("fullName");
+      const email = document.getElementById("email");
+      const pw = document.getElementById("password");
+      const terms = document.getElementById("terms");
+      FB.validate.clearError(form);
+      let ok = true;
+      if (name.value.trim().length < 2) { FB.validate.setError(name, "Please enter your full name."); ok = false; }
+      if (!FB.validate.email(email.value)) { FB.validate.setError(email, "Enter a valid email address."); ok = false; }
+      if (pw.value.length < 8) { FB.validate.setError(pw, "Password must be at least 8 characters."); ok = false; }
+      if (!terms.checked) { terms.focus(); FB.toast.error("Please accept the terms."); ok = false; }
+      if (!ok) return;
+      const btn = form.querySelector("button[type=submit]");
+      btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Creating…';
+      btn.disabled = true;
+      setTimeout(() => FB.authPage.signIn(email.value.trim().toLowerCase(), true), 750);
+    });
+  </script>
+</body>
+</html>
